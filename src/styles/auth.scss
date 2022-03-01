@@ -57,7 +57,7 @@
 
     h2 {
       font-size: 24px;
-      margin: 64px 0 24px 0;
+      margin: 64px 0 24px;
       font-family: 'Poppins', sans-serif;
     }
 
@@ -84,12 +84,13 @@
       font-size: 14px;
       color: #737380;
       margin-top: 16px;
-    }
 
-    a {
-      color: #e559f9;
+      a {
+        color: #e559f9;
+      }
     }
   }
+
   .create-room {
     margin-top: 64px;
     height: 50px;
