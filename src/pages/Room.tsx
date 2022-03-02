@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import  logoImg from '../assets/images/logo.svg';
 
@@ -18,13 +18,23 @@ type RoomParams = {
 }
 
 export function Room() {
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth()
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
   const roomId = params.id
+  const history = useHistory();
   
   
   const { title, questions } = useRoom(roomId)
+
+  async function handleCreatRoom() {
+    if (!user) {
+      await signInWithGoogle()
+    }
+
+    history.push(`${roomId}/questions`);
+
+  }
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -91,7 +101,8 @@ async function handleLikeQuestion(questionId: string, likeId: string | undefined
                 <span>{user.name}</span>
               </div>
             ) : (
-              <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+              // botão para fazer login antes de responder pergunta
+              <span>Para enviar uma pergunta, <button onClick={handleCreatRoom}>faça seu login</button>.</span>
             ) }
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>
           </div>
@@ -128,4 +139,8 @@ async function handleLikeQuestion(questionId: string, likeId: string | undefined
       </main>
     </div>
   );
+}
+
+function signInWithGoogle() {
+  throw new Error('Function not implemented.');
 }
